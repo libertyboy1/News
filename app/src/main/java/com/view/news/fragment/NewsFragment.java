@@ -35,8 +35,10 @@ public class NewsFragment extends BaseFragment {
     private ArrayList<NewsModel> models = new ArrayList<NewsModel>();
     private String label;
 
-    public NewsFragment(String label){
-        this.label=label;
+    private NewsRvAdapter adapter;
+
+    public NewsFragment(String label) {
+        this.label = label;
     }
 
     @Nullable
@@ -52,15 +54,15 @@ public class NewsFragment extends BaseFragment {
 
     private void initData() {
 
-        for (int position=0;position<15;position++){
-            NewsModel model=new NewsModel();
-            model.label=label;
+        for (int position = 0; position < 15; position++) {
+            NewsModel model = new NewsModel();
+            model.label = label;
             models.add(model);
         }
 
         //设置adapter
-        rvMain.setAdapter(new NewsRvAdapter(getContext(), models));
-
+        adapter = new NewsRvAdapter(getContext(), models);
+        rvMain.setAdapter(adapter);
 
     }
 
@@ -80,4 +82,11 @@ public class NewsFragment extends BaseFragment {
         rvMain.setItemAnimator(new DefaultItemAnimator());
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (adapter != null)
+            adapter.stopBanner(isVisibleToUser);
+
+    }
 }

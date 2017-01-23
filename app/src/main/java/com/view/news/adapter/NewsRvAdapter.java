@@ -46,6 +46,8 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private ArrayList<SliderLayout.Transformer> transformers = new ArrayList();
     private Random random = new Random();
 
+    private BannerViewHolder holder;
+
 
     public NewsRvAdapter(Context mContext, ArrayList<NewsModel> newsModels) {
         this.newsModels = newsModels;
@@ -69,7 +71,8 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == BANNER) {
-            return new BannerViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_new_banner, parent, false));
+            holder = new BannerViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_new_banner, parent, false));
+            return holder;
         } else if (viewType == NO_IMAGE) {
             return new NoViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news_no, parent, false));
         } else if (viewType == MORE_IMAGE) {
@@ -102,8 +105,6 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((NoViewHolder) holder).tv_source.setText(newsModels.get(position).label);
             ((NoViewHolder) holder).tv_time.setText(newsModels.get(position).time);
         }
-
-
     }
 
     @Override
@@ -243,6 +244,14 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         transformers.add(SliderLayout.Transformer.ZoomIn);
         transformers.add(SliderLayout.Transformer.ZoomOut);
         transformers.add(SliderLayout.Transformer.ZoomOutSlide);
+    }
+
+    public void stopBanner(boolean isStop) {
+        if (isStop){
+            holder.slider.startAutoCycle();
+        }else{
+            holder.slider.stopAutoCycle();
+        }
     }
 
 }
