@@ -22,7 +22,6 @@ public class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (BuildConfig.DEBUG) Log.e("BaseFragment", "ssss");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

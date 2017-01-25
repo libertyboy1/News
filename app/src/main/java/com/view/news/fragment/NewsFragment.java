@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.view.news.BaseFragment;
+import com.view.news.listener.EndlessRecyclerOnScrollListener;
 import com.view.news.R;
 import com.view.news.adapter.NewsRvAdapter;
 import com.view.news.model.NewsModel;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Destiny on 2017/1/4.
@@ -36,6 +36,8 @@ public class NewsFragment extends BaseFragment {
     private String label;
 
     private NewsRvAdapter adapter;
+
+    private LinearLayoutManager manager;
 
     public NewsFragment(String label) {
         this.label = label;
@@ -64,6 +66,7 @@ public class NewsFragment extends BaseFragment {
         adapter = new NewsRvAdapter(getContext(), models);
         rvMain.setAdapter(adapter);
 
+
     }
 
     private void initListener() {
@@ -73,11 +76,25 @@ public class NewsFragment extends BaseFragment {
                 srlMain.setRefreshing(false);
             }
         });
+
+        rvMain.addOnScrollListener(new EndlessRecyclerOnScrollListener(manager) {
+            @Override
+            public void onLoadMore(int currentPage) {
+                for (int position = 0; position < 15; position++) {
+                    NewsModel model = new NewsModel();
+                    model.label = label;
+                    models.add(model);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     private void initView() {
+        manager = new LinearLayoutManager(getContext());
         //设置布局管理器
-        rvMain.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvMain.setLayoutManager(manager);
         //设置Item增加、移除动画
         rvMain.setItemAnimator(new DefaultItemAnimator());
     }
@@ -89,4 +106,9 @@ public class NewsFragment extends BaseFragment {
             adapter.stopBanner(isVisibleToUser);
 
     }
+
+    public void setTop(){
+        rvMain.smoothScrollToPosition(0);
+    }
+
 }

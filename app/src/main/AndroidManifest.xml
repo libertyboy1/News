@@ -18,6 +18,15 @@
             </intent-filter>
         </activity>
 
+        <!--  单张图片详情  -->
+        <activity
+            android:name=".activity.SingleDetailActivity"
+            android:launchMode="singleTop" />
+
+        <!--  多张图片详情  -->
+        <activity
+            android:name=".activity.MoreDetailActivity"
+            android:launchMode="singleTop" />
 
     </application>
 

@@ -1,4 +1,4 @@
-package com.view.news.View;
+package com.view.news.view;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;

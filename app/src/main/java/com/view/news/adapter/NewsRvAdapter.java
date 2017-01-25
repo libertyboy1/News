@@ -1,7 +1,9 @@
 package com.view.news.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.view.news.R;
+import com.view.news.activity.MoreDetailActivity;
+import com.view.news.activity.SingleDetailActivity;
 import com.view.news.model.NewsModel;
 
 import java.util.ArrayList;
@@ -42,6 +46,7 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private final int SINGLE_IMAGE = 1;
     private final int MORE_IMAGE = 2;
     private final int NO_IMAGE = 3;
+    private final int LOAD_MORE = 4;
 
     private ArrayList<SliderLayout.Transformer> transformers = new ArrayList();
     private Random random = new Random();
@@ -59,6 +64,8 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemViewType(int position) {
         if (position == 0) {
             return BANNER;
+        } else if (position == newsModels.size()) {
+            return LOAD_MORE;
         } else if (position % 5 == 0) {
             return NO_IMAGE;
         } else if (position % 3 == 0) {
@@ -79,6 +86,8 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             return new SingleViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news_single, parent, false));
         } else if (viewType == SINGLE_IMAGE) {
             return new MoreViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_news_more, parent, false));
+        } else if (viewType == LOAD_MORE) {
+            return new LoadMoreViewHolder(LayoutInflater.from(mContext).inflate(R.layout.load_more, parent, false));
         }
         return null;
     }
@@ -104,17 +113,18 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((NoViewHolder) holder).tv_title.setText(newsModels.get(position).title);
             ((NoViewHolder) holder).tv_source.setText(newsModels.get(position).label);
             ((NoViewHolder) holder).tv_time.setText(newsModels.get(position).time);
+        } else if (holder instanceof LoadMoreViewHolder) {
         }
     }
 
     @Override
     public int getItemCount() {
         if (newsModels != null)
-            return newsModels.size();
+            return newsModels.size() + 1;
         return 0;
     }
 
-    class SingleViewHolder extends RecyclerView.ViewHolder {
+    class SingleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_title)
         public TextView tv_title;
         @BindView(R.id.tv_source)
@@ -127,10 +137,17 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public SingleViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, SingleDetailActivity.class);
+            mContext.startActivity(intent);
         }
     }
 
-    class MoreViewHolder extends RecyclerView.ViewHolder {
+    class MoreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_title)
         public TextView tv_title;
         @BindView(R.id.tv_source)
@@ -147,6 +164,13 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public MoreViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, MoreDetailActivity.class);
+            mContext.startActivity(intent);
         }
     }
 
@@ -159,6 +183,14 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public TextView tv_time;
 
         public NoViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    class LoadMoreViewHolder extends RecyclerView.ViewHolder {
+
+        public LoadMoreViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
@@ -190,14 +222,15 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                             @Override
                             public void onSliderClick(BaseSliderView slider) {
-                                Toast.makeText(mContext, slider.getBundle().getString("extra"), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(mContext, slider.getBundle().getString("extra"), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(mContext, SingleDetailActivity.class);
+                                mContext.startActivity(intent);
                             }
                         });
 
                 //add your extra information
                 textSliderView.bundle(new Bundle());
                 textSliderView.getBundle().putString("extra", name);
-
                 slider.addSlider(textSliderView);
             }
 
@@ -247,11 +280,14 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void stopBanner(boolean isStop) {
-        if (isStop){
-            holder.slider.startAutoCycle();
-        }else{
-            holder.slider.stopAutoCycle();
+        if (holder != null) {
+            if (isStop) {
+                holder.slider.startAutoCycle();
+            } else {
+                holder.slider.stopAutoCycle();
+            }
         }
     }
+
 
 }

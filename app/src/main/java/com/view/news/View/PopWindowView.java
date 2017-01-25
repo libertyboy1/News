@@ -1,26 +1,22 @@
-package com.view.news.View;
+package com.view.news.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.view.news.R;
 import com.view.news.activity.MainActivity;
 import com.view.news.adapter.TabRvAdapter;
 import com.view.news.fragment.NewsFragment;
 import com.view.news.model.TabModel;
-import com.view.news.utils.DensityUtil;
 
 import java.util.ArrayList;
 
@@ -137,9 +133,9 @@ public class PopWindowView {
                        model.isChecked=false;
                        unCheckTabs.add(model);
                        checkTabs.remove(position);
-                       mActivity.tabModels.remove(position);
-                       mActivity.fragments.remove(position);
-                       mActivity.vpAdapter.notifyDataSetChanged();
+                       mActivity.getPreseneter().tabModels.remove(position);
+                       mActivity.getPreseneter().fragments.remove(position);
+                       mActivity.getPreseneter().vpAdapter.notifyDataSetChanged();
                        checkAdapter.notifyItemRemoved(position);
                        uncheckAdapter.notifyItemInserted(unCheckTabs.size()-1);
                    }else{
@@ -163,10 +159,10 @@ public class PopWindowView {
             @Override
             public void onItemClick(View view, int position) {
                 checkTabs.add(unCheckTabs.get(position));
-                mActivity.fragments.add(new NewsFragment(unCheckTabs.get(position).title));
-                mActivity.tabModels.add(unCheckTabs.get(position));
+                mActivity.getPreseneter().fragments.add(new NewsFragment(unCheckTabs.get(position).title));
+                mActivity.getPreseneter().tabModels.add(unCheckTabs.get(position));
 
-                mActivity.vpAdapter.notifyDataSetChanged();
+                mActivity.getPreseneter().vpAdapter.notifyDataSetChanged();
                 unCheckTabs.remove(position);
                 uncheckAdapter.notifyItemRemoved(position);
                 checkAdapter.notifyItemInserted(checkTabs.size()-1);
