@@ -62,9 +62,10 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return BANNER;
-        } else if (position == newsModels.size()) {
+//        if (position == 0) {
+//            return BANNER;
+//        } else
+        if (position == newsModels.size()) {
             return LOAD_MORE;
         } else if (position % 5 == 0) {
             return NO_IMAGE;
@@ -222,7 +223,6 @@ public class NewsRvAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         .setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
                             @Override
                             public void onSliderClick(BaseSliderView slider) {
-//                                Toast.makeText(mContext, slider.getBundle().getString("extra"), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(mContext, SingleDetailActivity.class);
                                 mContext.startActivity(intent);
                             }

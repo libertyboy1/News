@@ -26,8 +26,6 @@ public class BaseActivity extends AppCompatActivity {
     @BindView(R.id.tb_main)
     public Toolbar tb_main;
 
-    private int layoutId;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -55,7 +53,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public int getLayoutId() {
-        return layoutId;
+        return 0;
     }
 
     public void initView() {

@@ -18,6 +18,14 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.TextActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
         <!--  单张图片详情  -->
         <activity
             android:name=".activity.SingleDetailActivity"

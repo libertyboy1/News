@@ -22,9 +22,6 @@ import butterknife.ButterKnife;
 
 import static com.view.news.R.id.tv_number;
 
-/**
- * Created by Destiny on 2017/1/24.
- */
 
 public class MoreDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     @BindView(R.id.vp_main)
@@ -37,16 +34,23 @@ public class MoreDetailActivity extends BaseActivity implements ViewPager.OnPage
     private String totalCount;
     private ArrayList<ImageView> imgs = new ArrayList<ImageView>();
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setToolBar();
     }
 
+
     private void setToolBar() {
         tb_main.setTitle("详情");
         tb_main.setNavigationIcon(R.mipmap.back);
         tb_main.setBackgroundColor(Color.BLACK);
+    }
+
+
+    public void aaa() {
+
     }
 
     @Override
@@ -100,9 +104,9 @@ public class MoreDetailActivity extends BaseActivity implements ViewPager.OnPage
     public void onPageSelected(int position) {
 
         if (position > 10) {
-            tv_number.setText((position+1) + " / " + totalCount);
+            tv_number.setText((position + 1) + " / " + totalCount);
         } else {
-            tv_number.setText("0" + (position+1) + " / " + totalCount);
+            tv_number.setText("0" + (position + 1) + " / " + totalCount);
         }
 
 
